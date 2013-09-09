@@ -29,14 +29,33 @@ var app = angular.module('main', ['ngTable']).
             return Math.ceil($scope.tableParams.total / $scope.perPage);
         };
 
+        // Update per page variable. To be used if I decide to show traditional paging bar.
         $scope.updatePerPage = function (param) {
-            console.log(param);
-            console.log($scope);
             $scope.tableParams.perPage = param;
-        }
+        };
 
+        // Let us show more data.
+        $scope.showNext = function () {
+            $scope.tableParams.page += 1;
+        };
+
+        // Show 'show next' button?
+        $scope.hasNext = function () {
+            return  ($scope.tableParams.total > ($scope.tableParams.page * $scope.tableParams.perPage));
+        };
+
+        // Let us show previous data.
+        $scope.showPrevious = function () {
+            $scope.tableParams.page -= 1;
+        };
+
+        // Show 'show previous' button?
+        $scope.hasPrevious = function () {
+            return  ($scope.tableParams.page !== 1);
+        };
+
+        // Update data when params are changed.
         $scope.$watch('tableParams', function(params) {
-
             $scope.classes = data.slice((params.page - 1) * params.perPage, params.page * params.perPage);
         }, true);
 

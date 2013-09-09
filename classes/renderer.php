@@ -21,7 +21,7 @@ class tool_classlist_renderer extends plugin_renderer_base {
     }
 
     public function render_ng_table() {
-        $html = '<div ng-app=main ng-controller=classList>';
+        $html = html_writer::start_div('', array('ng-app' => 'main', 'ng-controller' => 'classList'));
         $html .= html_writer::tag('strong', 'Page:{{tableParams.page}}(Perpage:{{tableParams.perPage}})');
         $tr = html_writer::tag(
             'tr',
@@ -31,6 +31,11 @@ class tool_classlist_renderer extends plugin_renderer_base {
             array('ng-repeat' => 'class in classes'));
         $html .= html_writer::tag('table', $tr , array('class' => 'flexible-wrap'));
 
+        $html .= html_writer::start_div();
+        $html .= html_writer::tag('button', 'Show Next' , array('ng-show' => 'hasNext()', 'ng-click' => 'showNext()'));
+        $html .= html_writer::tag('button', 'Show Previous' , array('ng-show' => 'hasPrevious()', 'ng-click' => 'showPrevious()'));
+        $html .= html_writer::end_div();
+
         // Per page.
         $html .= html_writer::start_div();
         $html .= html_writer::tag('span', get_string('perpage', 'tool_classlist'));
@@ -39,7 +44,6 @@ class tool_classlist_renderer extends plugin_renderer_base {
         $html .= html_writer::tag('button', 50, array('ng-click' => 'updatePerPage(50)'));
         $html .= html_writer::tag('button', 100, array('ng-click' => 'updatePerPage(100)'));
         $html .= html_writer::end_div();
-
 
         $html .= html_writer::end_div();
         return $html;
