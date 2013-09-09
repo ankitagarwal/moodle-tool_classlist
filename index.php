@@ -6,7 +6,6 @@ $PAGE->set_url('/admin/tool/classlist/index.php');
 $PAGE->requires->jquery();
 $PAGE->requires->js(new moodle_url('js/angular.js'));
 $PAGE->requires->js(new moodle_url('js/table.js'));
-$PAGE->requires->js(new moodle_url('js/ng-table.js'));
 
 require_login();
 

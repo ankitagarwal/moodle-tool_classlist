@@ -21,8 +21,8 @@ class tool_classlist_renderer extends plugin_renderer_base {
     }
 
     public function render_ng_table() {
-        $html = html_writer::start_div('', array('ng-app' => 'main', 'ng-controller' => 'classList'));
-        $html .= html_writer::tag('strong', 'Page:{{tableParams.page}}(Perpage:{{tableParams.perPage}})');
+        $html = html_writer::start_div('', array('ng-app' => 'tool_classlist_table', 'ng-controller' => 'classList'));
+        $html .= html_writer::tag('strong', 'Page:{{page}}(Perpage:{{perPage}})');
         $tr = html_writer::tag(
             'tr',
             html_writer::tag('td', '{{class.class}}').
