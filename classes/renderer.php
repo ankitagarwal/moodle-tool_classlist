@@ -16,21 +16,31 @@ class tool_classlist_renderer extends plugin_renderer_base {
      */
     public function render_tool_classlist_parser(tool_classlist_parser $parser) {
         $classes = $parser->get_classes();
-        $html = $this->render_ng_table();
+        $cols = array('class', 'classname', 'component', 'path', 'file');
+        $html = $this->render_angular_table($classes, $cols);
         return $html;
     }
 
-    public function render_ng_table() {
-        $html = html_writer::start_div('', array('ng-app' => 'tool_classlist_table', 'ng-controller' => 'classList'));
+    public function render_angular_table($classes, $cols) {
+        $html = html_writer::start_div('', array('ng-app' => 'tool_classlist_table', 'ng-controller' => 'classList',
+                'ng-init' => 'init('. json_encode($classes).')'));
         $html .= html_writer::tag('strong', 'Page:{{page}}(Perpage:{{perPage}})');
-        $tr = html_writer::tag(
-            'tr',
-            html_writer::tag('td', '{{class.class}}').
-            html_writer::tag('td', '{{class.name}}').
-            html_writer::tag('td', '{{class.file}}'),
-            array('ng-repeat' => 'class in classes'));
+
+        $td = '';
+        foreach ($cols as $col) {
+            $td .= html_writer::tag('td', '{{class.' . $col . '}}');
+        }
+
+        $th = '';
+        foreach ($cols as $col) {
+            $th .= html_writer::tag('th', $col);
+        }
+
+        $tr = html_writer::tag('tr', $th);
+        $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes'));
         $html .= html_writer::tag('table', $tr , array('class' => 'flexible-wrap'));
 
+        // Show next, previous.
         $html .= html_writer::start_div();
         $html .= html_writer::tag('button', 'Show Next' , array('ng-show' => 'hasNext()', 'ng-click' => 'showNext()'));
         $html .= html_writer::tag('button', 'Show Previous' , array('ng-show' => 'hasPrevious()', 'ng-click' => 'showPrevious()'));

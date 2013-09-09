@@ -1,25 +1,13 @@
 var app = angular.module('tool_classlist_table', []).
     controller('classList', function($scope) {
-        var data = [{name: "Moroni", age: 50},
-            {name: "Tiancum", age: 43},
-            {name: "Jacob", age: 27},
-            {name: "Nephi", age: 29},
-            {name: "Enos", age: 34},
-            {name: "Tiancum", age: 43},
-            {name: "Jacob", age: 27},
-            {name: "Nephi", age: 29},
-            {name: "Enos", age: 34},
-            {name: "Tiancum", age: 43},
-            {name: "Jacob", age: 27},
-            {name: "Nephi", age: 29},
-            {name: "Enos", age: 34},
-            {name: "Tiancum", age: 43},
-            {name: "Jacob", age: 27},
-            {name: "Nephi", age: 29},
-            {name: "Enos", age: 34}];
+
+        $scope.init = function(classes) {
+            $scope.data = classes;
+            $scope.total = $scope.data.length;
+        }
 
         $scope.page = 1; // show first page
-        $scope.total = data.length; // length of data
+        $scope.total = 0; // length of data
         $scope.perPage = 10; // count per page
 
 
@@ -53,8 +41,14 @@ var app = angular.module('tool_classlist_table', []).
         };
 
         // Update data when params are changed.
-        $scope.$watch('page + perPage', function() {
-            $scope.classes = data.slice(($scope.page - 1) * $scope.perPage, $scope.page * $scope.perPage);
+        $scope.$watch('perPage', function() {
+            $scope.page = 1; // Reset page counter.
+            $scope.classes = $scope.data.slice(($scope.page - 1) * $scope.perPage, $scope.page * $scope.perPage);
+        }, true);
+
+        // Update data when params are changed.
+        $scope.$watch('page', function() {
+            $scope.classes = $scope.data.slice(($scope.page - 1) * $scope.perPage, $scope.page * $scope.perPage);
         }, true);
 
         console.log($scope);

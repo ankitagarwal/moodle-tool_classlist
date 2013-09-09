@@ -67,20 +67,36 @@ class tool_classlist_parser implements \renderable{
 
         foreach ($classmap as $class => $file) {
             $i++;
-            if ($i == 20)
-                return;
             if (is_readable($file)) {
+                if (strpos($class, 'tinymce_spellchecker') !== false) {
+                    // Hack to stop loading broken file.
+                    continue;
+                }
                 include_once($file);
-                $details = array();
-                $details['file'] = $file;
-                $details['class'] = $class;
+                // Ignore synonyms.
+                if (class_exists($class, false)) {
+                    $details = array();
+                    $details['file'] = $file;
+                    $details['class'] = $class;
 
-                $parts = explode('\\', get_called_class());
-                $details['component'] = $parts[0];
-                $details['classname'] = array_pop($parts);
-                unset($parts[0]);
-                $details['path'] = implode('\\', $parts);
-                $this->classes[] = $details;
+                    $parts = explode('\\', $class);
+                    if (count($parts) > 1) {
+                        // Name space is used.
+                        $details['component'] = $parts[0];
+                        $details['classname'] = array_pop($parts);
+                        unset($parts[0]);
+                        $details['path'] = implode('\\', $parts);
+                    } else {
+                        // Legacy style.
+                        $parts = explode('_', $class);
+                        $details['component'] = $parts[0];
+                        $details['classname'] = array_pop($parts);
+                        unset($parts[0]);
+                        $details['path'] = implode('\\', $parts);
+                    }
+
+                    $this->classes[] = $details;
+                }
             }
         }
     }
