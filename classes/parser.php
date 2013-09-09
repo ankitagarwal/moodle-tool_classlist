@@ -1,6 +1,6 @@
 <?php
 
-//namespace tool_classlist;
+namespace tool_classlist;
 
 /**
  * Parser to parse all classes in core.
@@ -8,7 +8,7 @@
  * Class parser
  * @package tool_classlist
  */
-class tool_classlist_parser implements \renderable{
+class parser {
 
     /**
      * @var array List of event classes found.
@@ -29,7 +29,7 @@ class tool_classlist_parser implements \renderable{
      * constructor.
      */
     public function __construct() {
-        $this->classmap = \tool_classlist\component::get_classmap();
+        $this->classmap = component::get_classmap();
         $this->generate_class_details();
     }
 

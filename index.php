@@ -8,11 +8,9 @@ $PAGE->requires->js(new moodle_url('js/angular.js'));
 $PAGE->requires->js(new moodle_url('js/table.js'));
 
 require_login();
-
-$parser = new tool_classlist_parser();
 $output = $PAGE->get_renderer('tool_classlist');
 
 echo $output->header();
-echo $output->render($parser);
+echo $output->render_tool_classlist();
 echo $output->footer();
 

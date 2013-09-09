@@ -10,30 +10,24 @@ class tool_classlist_renderer extends plugin_renderer_base {
     /**
      * Render classlist
      *
-     * @param tool_classlist_parser $parser
-     *
      * @return string
      */
-    public function render_tool_classlist_parser(tool_classlist_parser $parser) {
-        $classes = $parser->get_classes();
+    public function render_tool_classlist() {
         $cols = array('class', 'classname', 'component', 'path', 'file');
-        $html = $this->render_angular_table($classes, $cols);
+        $html = $this->render_angular_table($cols);
         return $html;
     }
 
-    public function render_angular_table($classes, $cols) {
+    public function render_angular_table($cols) {
         $html = html_writer::start_div('', array('ng-app' => 'tool_classlist_table', 'ng-controller' => 'classList',
-                'ng-init' => 'init('. json_encode($classes).')'));
+                'ng-init' => 'init()'));
         $html .= html_writer::tag('strong', 'Page:{{page}}(Perpage:{{perPage}})');
 
         $td = '';
-        foreach ($cols as $col) {
-            $td .= html_writer::tag('td', '{{class.' . $col . '}}');
-        }
-
         $th = '';
         foreach ($cols as $col) {
             $th .= html_writer::tag('th', $col);
+            $td .= html_writer::tag('td', '{{class.' . $col . '}}');
         }
 
         $tr = html_writer::tag('tr', $th);

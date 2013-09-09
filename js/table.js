@@ -1,11 +1,19 @@
 var app = angular.module('tool_classlist_table', []).
-    controller('classList', function($scope) {
+    controller('classList', function($scope, $http) {
 
         $scope.init = function(classes) {
-            $scope.data = classes;
-            $scope.total = $scope.data.length;
+            $http({method: 'GET', url: M.cfg.wwwroot + '/admin/tool/classlist/list.php?key=' + M.cfg.sesskey}).
+                success(function(data) {
+                    $scope.data = data;
+                    $scope.total = $scope.data.length;
+                    $scope.filterClassesReset();
+                }).
+                error(function() {
+                    alert('Cannot fetch class list, something went wrong');
+                });
         }
 
+        $scope.data = [];
         $scope.page = 1; // show first page
         $scope.total = 0; // length of data
         $scope.perPage = 10; // count per page
@@ -40,16 +48,20 @@ var app = angular.module('tool_classlist_table', []).
             return  ($scope.page !== 1);
         };
 
-        // Update data when params are changed.
-        $scope.$watch('perPage', function() {
-            $scope.page = 1; // Reset page counter.
+        $scope.filterClasses = function() {
             $scope.classes = $scope.data.slice(($scope.page - 1) * $scope.perPage, $scope.page * $scope.perPage);
-        }, true);
+        };
+
+        $scope.filterClassesReset = function() {
+            $scope.page = 1;
+            $scope.filterClasses();
+        }
 
         // Update data when params are changed.
-        $scope.$watch('page', function() {
-            $scope.classes = $scope.data.slice(($scope.page - 1) * $scope.perPage, $scope.page * $scope.perPage);
-        }, true);
+        $scope.$watch('perPage', $scope.filterClassesReset , true);
+
+        // Update data when params are changed.
+        $scope.$watch('page', $scope.filterClasses, true);
 
         console.log($scope);
 
