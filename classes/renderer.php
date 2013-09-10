@@ -13,12 +13,11 @@ class tool_classlist_renderer extends plugin_renderer_base {
      * @return string
      */
     public function render_tool_classlist() {
-        $cols = array('class', 'classname', 'component', 'path', 'file');
-        $html = $this->render_angular_table($cols);
+        $html = $this->render_angular_table();
         return $html;
     }
 
-    public function render_angular_table($cols) {
+    public function render_angular_table() {
         global $OUTPUT;
         $html = html_writer::start_div('', array('ng-app' => 'tool_classlist_table', 'ng-controller' => 'classList',
                 'ng-init' => 'init()'));
