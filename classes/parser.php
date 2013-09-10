@@ -11,11 +11,6 @@ namespace tool_classlist;
 class parser {
 
     /**
-     * @var array List of event classes found.
-     */
-    protected $events = array();
-
-    /**
      * @var array List of all classes found.
      */
     protected $classmap = array();
@@ -31,15 +26,6 @@ class parser {
     public function __construct() {
         $this->classmap = component::get_classmap();
         $this->generate_class_details();
-    }
-
-    /**
-     * Returns list of events classes found.
-     *
-     * @return array list of event classes.
-     */
-    public function get_events() {
-        return $this->events;
     }
 
     /**
@@ -84,15 +70,13 @@ class parser {
                         // Name space is used.
                         $details['component'] = $parts[0];
                         $details['classname'] = array_pop($parts);
-                        unset($parts[0]);
-                        $details['path'] = implode('\\', $parts);
                     } else {
                         // Legacy style.
-                        $parts = explode('_', $class);
-                        $details['component'] = $parts[0];
-                        $details['classname'] = array_pop($parts);
-                        unset($parts[0]);
-                        $details['path'] = implode('\\', $parts);
+                        $parts = explode('/', $file);
+                        $filename = str_replace('.php', '', array_pop($parts));
+                        $details['component'] = str_replace($filename, '', $class);
+                        $details['classname'] = $class;
+                        $details['component'] = trim($details['component'], '_'); // Remove any trailing _ .
                     }
 
                     $this->classes[] = $details;
