@@ -19,18 +19,20 @@ class tool_classlist_renderer extends plugin_renderer_base {
     }
 
     public function render_angular_table($cols) {
+        global $OUTPUT;
         $html = html_writer::start_div('', array('ng-app' => 'tool_classlist_table', 'ng-controller' => 'classList',
                 'ng-init' => 'init()'));
         $html .= html_writer::tag('strong', 'Page:{{page}}(Perpage:{{perPage}})');
 
-        $td = '';
-        $th = '';
-        foreach ($cols as $col) {
-            $th .= html_writer::tag('th', $col);
-            $td .= html_writer::tag('td', '{{class.' . $col . '}}');
-        }
+        $iconasc = $OUTPUT->pix_icon('t/sort_asc', '', '', array('class' => 'iconsmall sorticon',
+                'ng-show' => 'showSortingIcon(col, true)'));
+        $icondesc = $OUTPUT->pix_icon('t/sort_desc', '', '', array('class' => 'iconsmall sorticon',
+                'ng-show' => 'showSortingIcon(col, false)'));
 
+        $link = html_writer::link('#', '{{col}}', array('ng-click' => 'updateSorting(col)'));
+        $th = html_writer::tag('th', $link . $iconasc . $icondesc, array('ng-repeat' => 'col in cols'));
         $tr = html_writer::tag('tr', $th);
+        $td = html_writer::tag('td', '{{class[col]}}', array('ng-repeat' => 'col in cols'));
         $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes'));
         $html .= html_writer::tag('table', $tr , array('class' => 'flexible-wrap'));
 

@@ -11,6 +11,7 @@ if (!is_siteadmin()) {
 $key = required_param('key', PARAM_ALPHANUM);
 confirm_sesskey($key);
 $parser = new \tool_classlist\parser();
+$classes = $parser->get_classes();
 
-echo json_encode($parser->get_classes());
+echo json_encode(array('cols' => array_keys($classes[0]), 'data' => $classes));
 

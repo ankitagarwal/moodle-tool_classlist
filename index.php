@@ -28,6 +28,7 @@ require_login();
 admin_externalpage_setup('toolclasslist');
 
 $PAGE->set_context(context_system::instance());
+$PAGE->set_title(get_string('pluginname', 'tool_classlist'));
 $PAGE->set_url('/admin/tool/classlist/index.php');
 $PAGE->requires->jquery();
 $PAGE->requires->js(new moodle_url('js/angular.js'));
