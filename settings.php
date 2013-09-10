@@ -14,13 +14,17 @@
 // For a copy of the GNU General Public License, see <http://www.gnu.org/licenses/>.
 
 /**
- * Define strings.
+ * Define admin pages.
  *
  * @package    tool_classlist
  * @copyright  2013 Ankit Agarwal
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['perpage'] = 'Number of records to display per page: ';
-$string['pluginname'] = 'Class list';
+defined('MOODLE_INTERNAL') || die;
+
+if ($hassiteconfig) {
+    $ADMIN->add('development', new admin_externalpage('toolclasslist', get_string('pluginname', 'tool_classlist'),
+        "$CFG->wwwroot/$CFG->admin/tool/classlist/index.php", 'moodle/site:config'));
+}
 

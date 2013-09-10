@@ -1,7 +1,7 @@
 var app = angular.module('tool_classlist_table', []).
     controller('classList', function($scope, $http) {
 
-        $scope.init = function(classes) {
+        $scope.init = function() {
             $http({method: 'GET', url: M.cfg.wwwroot + '/admin/tool/classlist/list.php?key=' + M.cfg.sesskey}).
                 success(function(data) {
                     $scope.data = data;
@@ -10,8 +10,9 @@ var app = angular.module('tool_classlist_table', []).
                 }).
                 error(function() {
                     alert('Cannot fetch class list, something went wrong');
-                });
-        }
+                }
+            );
+        };
 
         $scope.data = [];
         $scope.page = 1; // show first page
@@ -55,7 +56,7 @@ var app = angular.module('tool_classlist_table', []).
         $scope.filterClassesReset = function() {
             $scope.page = 1;
             $scope.filterClasses();
-        }
+        };
 
         // Update data when params are changed.
         $scope.$watch('perPage', $scope.filterClassesReset , true);
