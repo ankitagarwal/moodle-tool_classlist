@@ -33,7 +33,7 @@ class tool_classlist_renderer extends plugin_renderer_base {
         $tr = html_writer::tag('tr', $th);
         $td = html_writer::tag('td', '{{class[col]}}', array('ng-repeat' => 'col in cols'));
         $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes'));
-        $html .= html_writer::tag('table', $tr , array('class' => 'flexible-wrap'));
+        $html .= html_writer::tag('table', $tr , array('class' => 'generaltable'));
 
         // Show next, previous.
         $html .= html_writer::start_div();

@@ -61,7 +61,6 @@ var app = angular.module('tool_classlist_table', []).
                     }
                 });
             }
-            console.log($scope.data);
         };
 
         $scope.numPages = function () {
@@ -93,8 +92,11 @@ var app = angular.module('tool_classlist_table', []).
             return  ($scope.page !== 1);
         };
 
-        $scope.filterClasses = function() {
-            $scope.classes = $scope.data.slice(($scope.page - 1) * $scope.perPage, $scope.page * $scope.perPage);
+        $scope.filterClasses = function(oldval, newval) {
+            if (oldval !== newval) {
+                // Do not call this during init.
+                $scope.classes = $scope.data.slice(($scope.page - 1) * $scope.perPage, $scope.page * $scope.perPage);
+            }
         };
 
         $scope.filterClassesReset = function() {
@@ -106,7 +108,7 @@ var app = angular.module('tool_classlist_table', []).
         $scope.$watch('perPage', $scope.filterClassesReset);
 
         // Update data when params are changed.
-        $scope.$watch('page + data', $scope.filterClasses);
+        $scope.$watch('page', $scope.filterClasses);
 
         // Watch array for change in sorting.
         $scope.$watchCollection('data', $scope.filterClasses);
