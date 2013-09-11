@@ -103,10 +103,13 @@ var app = angular.module('tool_classlist_table', []).
         };
 
         // Update data when params are changed.
-        $scope.$watch('perPage', $scope.filterClassesReset , true);
+        $scope.$watch('perPage', $scope.filterClassesReset);
 
         // Update data when params are changed.
         $scope.$watch('page + data', $scope.filterClasses);
+
+        // Watch array for change in sorting.
+        $scope.$watchCollection('data', $scope.filterClasses);
 
         console.log($scope);
 
