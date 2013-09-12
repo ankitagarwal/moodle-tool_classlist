@@ -7,6 +7,7 @@ var app = angular.module('tool_classlist_table', []).
                     $scope.data = data.data;
                     $scope.cols = data.cols;
                     $scope.total = $scope.data.length;
+                    $scope.perPage = $scope.total;
                     $scope.resetSorting();
                 }).
                 error(function() {
@@ -20,6 +21,7 @@ var app = angular.module('tool_classlist_table', []).
         $scope.page = 1; // show first page
         $scope.total = 0; // length of data
         $scope.perPage = 25; // count per page
+        $scope.color = 0;
 
         // Set sorting flags.
         $scope.resetSorting = function () {
@@ -99,9 +101,9 @@ var app = angular.module('tool_classlist_table', []).
             }
         };
 
-        $scope.filterClassesReset = function() {
+        $scope.filterClassesReset = function(oldval, newval) {
             $scope.page = 1;
-            $scope.filterClasses();
+            $scope.filterClasses(oldval, newval);
         };
 
         // Update data when params are changed.

@@ -46,36 +46,44 @@ class tool_classlist_renderer extends plugin_renderer_base {
 
         // Filter controls.
         $html .= html_writer::start_div();
+
         $option = html_writer::tag('option', get_string('all'), array('value' => 0));
-        $html .= html_writer::tag('select', $option, array('ng-options' => "comp.component for comp in classes |
-                unique:'component'"));
+        $html .= get_string('select');
+        $html .= html_writer::tag('select', $option, array('ng-model' => 'color', 'ng-options' => "comp.component as
+                comp.component for comp in data"));
+
+        $html .= get_string('filter');
+        $html .= html_writer::tag('input', '', array('type' => 'text', 'ng-model' => 'query'));
+
+        $html .= html_writer::tag('span', get_string('perpage', 'tool_classlist'));
+        $html .= html_writer::tag('button', 10, array('ng-click' => 'updatePerPage(10)'));
+        $html .= html_writer::tag('button', 25, array('ng-click' => 'updatePerPage(25)'));
+        $html .= html_writer::tag('button', 50, array('ng-click' => 'updatePerPage(50)'));
+        $html .= html_writer::tag('button', 100, array('ng-click' => 'updatePerPage(100)'));
+        $html .= html_writer::tag('button', get_string('all'), array('ng-click' => 'updatePerPage(total)'));
+
+        $html .= html_writer::tag('button', 'Show Next' , array('ng-show' => 'hasNext()', 'ng-click' => 'showNext()'));
+        $html .= html_writer::tag('button', 'Show Previous' , array('ng-show' => 'hasPrevious()', 'ng-click' => 'showPrevious()'));
+
         $html .= html_writer::end_div();
 
+        // Actual content.
         $iconasc = $OUTPUT->pix_icon('t/sort_asc', '', '', array('class' => 'iconsmall sorticon',
                 'ng-show' => 'showSortingIcon(col, true)'));
         $icondesc = $OUTPUT->pix_icon('t/sort_desc', '', '', array('class' => 'iconsmall sorticon',
                 'ng-show' => 'showSortingIcon(col, false)'));
 
-        $link = html_writer::link('#', '{{col}}', array('ng-click' => 'updateSorting(col)'));
+        $link = html_writer::link('', '{{col}}', array('ng-click' => 'updateSorting(col)'));
         $th = html_writer::tag('th', $link . $iconasc . $icondesc, array('ng-repeat' => 'col in cols'));
         $tr = html_writer::tag('tr', $th);
         $td = html_writer::tag('td', '{{class[col]}}', array('ng-repeat' => 'col in cols'));
-        $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes'));
+        $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes | filter:query'));
         $html .= html_writer::tag('table', $tr , array('class' => 'generaltable tool_classlist_table'));
 
         // Show next, previous.
         $html .= html_writer::start_div();
         $html .= html_writer::tag('button', 'Show Next' , array('ng-show' => 'hasNext()', 'ng-click' => 'showNext()'));
         $html .= html_writer::tag('button', 'Show Previous' , array('ng-show' => 'hasPrevious()', 'ng-click' => 'showPrevious()'));
-        $html .= html_writer::end_div();
-
-        // Per page.
-        $html .= html_writer::start_div();
-        $html .= html_writer::tag('span', get_string('perpage', 'tool_classlist'));
-        $html .= html_writer::tag('button', 10, array('ng-click' => 'updatePerPage(10)'));
-        $html .= html_writer::tag('button', 25, array('ng-click' => 'updatePerPage(25)'));
-        $html .= html_writer::tag('button', 50, array('ng-click' => 'updatePerPage(50)'));
-        $html .= html_writer::tag('button', 100, array('ng-click' => 'updatePerPage(100)'));
         $html .= html_writer::end_div();
 
         $html .= html_writer::end_div();
