@@ -1,4 +1,25 @@
 <?php
+// This file is part of Class list tool for Moodle
+//
+// Class list is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Advanced Spam Cleaner is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// For a copy of the GNU General Public License, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Define renderer.
+ *
+ * @package    tool_classlist
+ * @copyright  2013 Ankit Agarwal
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 /**
  * Renderer for tool_classlist
@@ -23,6 +44,13 @@ class tool_classlist_renderer extends plugin_renderer_base {
                 'ng-init' => 'init()'));
         $html .= html_writer::tag('strong', 'Page:{{page}}(Perpage:{{perPage}})');
 
+        // Filter controls.
+        $html .= html_writer::start_div();
+        $option = html_writer::tag('option', get_string('all'), array('value' => 0));
+        $html .= html_writer::tag('select', $option, array('ng-options' => "comp.component for comp in classes |
+                unique:'component'"));
+        $html .= html_writer::end_div();
+
         $iconasc = $OUTPUT->pix_icon('t/sort_asc', '', '', array('class' => 'iconsmall sorticon',
                 'ng-show' => 'showSortingIcon(col, true)'));
         $icondesc = $OUTPUT->pix_icon('t/sort_desc', '', '', array('class' => 'iconsmall sorticon',
@@ -33,7 +61,7 @@ class tool_classlist_renderer extends plugin_renderer_base {
         $tr = html_writer::tag('tr', $th);
         $td = html_writer::tag('td', '{{class[col]}}', array('ng-repeat' => 'col in cols'));
         $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes'));
-        $html .= html_writer::tag('table', $tr , array('class' => 'generaltable'));
+        $html .= html_writer::tag('table', $tr , array('class' => 'generaltable tool_classlist_table'));
 
         // Show next, previous.
         $html .= html_writer::start_div();

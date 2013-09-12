@@ -1,4 +1,17 @@
 <?php
+// This file is part of Class list tool for Moodle
+//
+// Class list is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Advanced Spam Cleaner is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// For a copy of the GNU General Public License, see <http://www.gnu.org/licenses/>.
 
 namespace tool_classlist;
 
@@ -62,22 +75,22 @@ class parser {
                 // Ignore synonyms.
                 if (class_exists($class, false)) {
                     $details = array();
-                    $details['file'] = $file;
                     $details['class'] = $class;
 
                     $parts = explode('\\', $class);
                     if (count($parts) > 1) {
                         // Name space is used.
-                        $details['component'] = $parts[0];
                         $details['classname'] = array_pop($parts);
+                        $details['component'] = $parts[0];
                     } else {
                         // Legacy style.
                         $parts = explode('/', $file);
                         $filename = str_replace('.php', '', array_pop($parts));
-                        $details['component'] = str_replace($filename, '', $class);
                         $details['classname'] = $class;
+                        $details['component'] = str_replace($filename, '', $class);
                         $details['component'] = trim($details['component'], '_'); // Remove any trailing _ .
                     }
+                    $details['file'] = $file;
 
                     $this->classes[] = $details;
                 }
