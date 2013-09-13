@@ -108,8 +108,8 @@ var app = angular.module('tool_classlist_table', ['ui.unique', 'ui.bootstrap', '
 
         $scope.openPopup = function (classobj) {
             var modalInstance = $modal.open({
-                templateUrl: 'template/modal/backdrop.html',
-                template: '<div>{{modalContent}}</div>',
+                templateUrl: 'template/modal/window.html',
+                template: '<div ng-modle=modalContent></div>',
                 controller: $scope.ModalInstanceCtrl(classobj.class),
                 resolve: {
                     items: function () {
