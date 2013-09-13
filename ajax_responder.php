@@ -24,15 +24,29 @@
 define('AJAX_SCRIPT', true);
 require('../../../config.php');
 
+define('TOOL_CLASSLIST_CONTENT_LIST', 'list');
+define('TOOL_CLASSLIST_CONTENT_FILE', 'file');
+
 if (!is_siteadmin()) {
     echo "We give cookies only to site admins";
     die();
 }
 
 $key = required_param('key', PARAM_ALPHANUM);
+$content = required_param('content', PARAM_ALPHA);
+$class = optional_param('class', 0, PARAM_RAW);
 confirm_sesskey($key);
 $parser = new \tool_classlist\parser();
-$classes = $parser->get_classes();
 
-echo json_encode(array('cols' => array_keys($classes[0]), 'data' => $classes));
+switch ($content) {
 
+    case TOOL_CLASSLIST_CONTENT_LIST : $classes = $parser->get_classes();
+                                        echo json_encode(array('cols' => array_keys(reset($classes)), 'data' => $classes));
+                                        break;
+    case TOOL_CLASSLIST_CONTENT_FILE : $classmap = $parser->get_classmap();
+                                        $cont = (isset($classmap[$class])) ? file_get_contents($classmap[$class]) : false;
+                                        echo json_encode($cont);
+                                        break;
+    default: echo json_encode(get_string('error'));
+            break;
+}

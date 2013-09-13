@@ -1,8 +1,8 @@
-var app = angular.module('tool_classlist_table', ['ui.unique']).
-    controller('classList', function($scope, $http) {
+var app = angular.module('tool_classlist_table', ['ui.unique', 'ui.bootstrap', 'ui.bootstrap.modal']).
+    controller('classList', function($scope, $http, $modal) {
 
         $scope.init = function() {
-            $http({method: 'GET', url: M.cfg.wwwroot + '/admin/tool/classlist/list.php?key=' + M.cfg.sesskey}).
+            $http({method: 'GET', url: M.cfg.wwwroot + '/admin/tool/classlist/ajax_responder.php?content=list&key=' + M.cfg.sesskey}).
                 success(function(data) {
                     $scope.data = data.data;
                     $scope.cols = data.cols;
@@ -21,7 +21,7 @@ var app = angular.module('tool_classlist_table', ['ui.unique']).
         $scope.page = 1; // show first page
         $scope.total = 0; // length of data
         $scope.perPage = 25; // count per page
-        $scope.color = 0;
+        $scope.modalContent = ''; // Content of modal window
 
         // Set sorting flags.
         $scope.resetSorting = function () {
@@ -104,6 +104,31 @@ var app = angular.module('tool_classlist_table', ['ui.unique']).
         $scope.filterClassesReset = function(oldval, newval) {
             $scope.page = 1;
             $scope.filterClasses(oldval, newval);
+        };
+
+        $scope.openPopup = function (classobj) {
+            var modalInstance = $modal.open({
+                templateUrl: 'template/modal/backdrop.html',
+                template: '<div>{{modalContent}}</div>',
+                controller: $scope.ModalInstanceCtrl(classobj.class),
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
+        };
+
+        $scope.ModalInstanceCtrl = function (fullclass) {
+            $http({method: 'GET', url: M.cfg.wwwroot + '/admin/tool/classlist/ajax_responder.php?content=file&key=' + M.cfg.sesskey + '&class=' + fullclass}).
+                success(function(data) {
+                    $scope.modalContent = data;
+                }).
+                error(function() {
+                    alert('Cannot fetch class list, something went wrong');
+                }
+            );
+
         };
 
         // Update data when params are changed.

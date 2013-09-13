@@ -30,10 +30,12 @@ admin_externalpage_setup('toolclasslist');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('pluginname', 'tool_classlist'));
 $PAGE->set_url('/admin/tool/classlist/index.php');
+
 $PAGE->requires->jquery();
 $PAGE->requires->js(new moodle_url('js/angular.js'));
-$PAGE->requires->js(new moodle_url('js/table.js'));
 $PAGE->requires->js(new moodle_url('js/unique.js'));
+$PAGE->requires->js(new moodle_url('js/uibootstrap.js'));
+$PAGE->requires->js(new moodle_url('js/table.js'));
 
 $output = $PAGE->get_renderer('tool_classlist');
 

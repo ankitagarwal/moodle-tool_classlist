@@ -51,6 +51,15 @@ class parser {
     }
 
     /**
+     * Returns classmap.
+     *
+     * @return array list of all classes found
+     */
+    public function get_classmap() {
+        return $this->classmap;
+    }
+
+    /**
      * Generate class details array from passed on class map.
      *
      * @param array $classmap classmap

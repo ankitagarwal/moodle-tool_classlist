@@ -77,7 +77,8 @@ class tool_classlist_renderer extends plugin_renderer_base {
         $th = html_writer::tag('th', $link . $iconasc . $icondesc, array('ng-repeat' => 'col in cols'));
         $tr = html_writer::tag('tr', $th);
         $td = html_writer::tag('td', '{{class[col]}}', array('ng-repeat' => 'col in cols'));
-        $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes | filter:query | filter:search.component'));
+        $tr .= html_writer::tag('tr', $td, array('ng-click' => 'openPopup({{class}})',
+                                                'ng-repeat' => 'class in classes | filter:query | filter:search.component'));
         $html .= html_writer::tag('table', $tr , array('class' => 'generaltable tool_classlist_table'));
 
         // Show next, previous.
@@ -86,6 +87,9 @@ class tool_classlist_renderer extends plugin_renderer_base {
         $html .= html_writer::tag('button', 'Show Previous' , array('ng-show' => 'hasPrevious()', 'ng-click' => 'showPrevious()'));
         $html .= html_writer::end_div();
 
+        $html.= '<div class="modal-header">
+            {{modal.Content}}
+            <button class="btn btn-primary" ng-click="ok()">OK</button>';
         $html .= html_writer::end_div();
         return $html;
     }
