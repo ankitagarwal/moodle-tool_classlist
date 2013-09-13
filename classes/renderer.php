@@ -47,10 +47,10 @@ class tool_classlist_renderer extends plugin_renderer_base {
         // Filter controls.
         $html .= html_writer::start_div();
 
-        $option = html_writer::tag('option', get_string('all'), array('value' => 0));
-        $html .= get_string('select');
-        $html .= html_writer::tag('select', $option, array('ng-model' => 'color', 'ng-options' => "comp.component as
-                comp.component for comp in data"));
+        $option = html_writer::tag('option', get_string('all'), array('value' => '', 'selected' => 'selected'));
+        $html .= get_string('selectcomponent', 'tool_classlist');
+        $html .= html_writer::tag('select', $option, array('ng-model' => 'search.component', 'ng-options' => "comp.component as
+                comp.component for comp in data | unique:'component'"));
 
         $html .= get_string('filter');
         $html .= html_writer::tag('input', '', array('type' => 'text', 'ng-model' => 'query'));
@@ -77,7 +77,7 @@ class tool_classlist_renderer extends plugin_renderer_base {
         $th = html_writer::tag('th', $link . $iconasc . $icondesc, array('ng-repeat' => 'col in cols'));
         $tr = html_writer::tag('tr', $th);
         $td = html_writer::tag('td', '{{class[col]}}', array('ng-repeat' => 'col in cols'));
-        $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes | filter:query'));
+        $tr .= html_writer::tag('tr', $td, array('ng-repeat' => 'class in classes | filter:query | filter:search.component'));
         $html .= html_writer::tag('table', $tr , array('class' => 'generaltable tool_classlist_table'));
 
         // Show next, previous.

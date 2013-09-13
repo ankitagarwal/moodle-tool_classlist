@@ -23,4 +23,5 @@
 
 $string['perpage'] = 'Number of records to display per page: ';
 $string['pluginname'] = 'Class list';
+$string['selectcomponent'] = 'Filter by component';
 

@@ -1,4 +1,4 @@
-var app = angular.module('tool_classlist_table', []).
+var app = angular.module('tool_classlist_table', ['ui.unique']).
     controller('classList', function($scope, $http) {
 
         $scope.init = function() {
